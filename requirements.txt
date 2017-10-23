@@ -1,0 +1,19 @@
+requests==2.14.2
+numpy==1.12.1
+pandas
+bayesian-optimization==0.4.0
+hyperopt
+keras
+keras-rl
+tensorflow
+gym
+poloniex==0.0.8
+pybitflyer==0.1.6
+zaifapi==1.6.1
+coincheck==0.1.10
+simplejson==3.8.1
+pymc3
+-e git://github.com/rbarrois/throttle.git#egg=throttle
+pubnub==4.0.13
+trollius
+retry
