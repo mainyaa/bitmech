@@ -255,6 +255,8 @@ class Backtest(object):
         balance = self.portfolio["currency"] + price * self.portfolio["asset"]
         alpha = balance / self.start["balance"] * 100 - 100 - market
         self.alpha[self.index] = alpha
+        self.balance[self.index] = self.portfolio["currency"] + price * self.portfolio["asset"]
+        self.relative_profit[self.index] = self.balance[self.index] / self.balance[0] * 100 - 100
         diff = alpha - self.alpha[self.last_action_index]
         self.alpha_diff[self.index] = diff
         self.status[self.index, -1] = diff
@@ -827,11 +829,11 @@ class Backtest(object):
                 "timespan": str(timespan),
                 "market": endPrice * 100 / startPrice - 100,
 
-                "profit": profit,
+                #"profit": profit,
                 "relative_profit": relative_profit,
 
                 #"yearlyProfit": round(profit / timespan.year()),
-                #"relativeYearlyProfit": round(relative_profit / timespan.year()),
+                "relativeYearlyProfit": relative_profit * 365 / timespan.days,
                 "trades": self.trades,
         }
         profitdf = self.df.copy()
@@ -847,7 +849,8 @@ class Backtest(object):
         report.update(risk)
         report.update(risk2)
         report["alpha2"] = report["relative_profit"] - report["beta"] * report["market"]
-        report["config"] = self.params[self.strategy].copy()
+        if hasattr(self, "strategy"):
+            report["config"] = self.params[self.strategy].copy()
         self.result.append(pd.DataFrame.from_dict([report]))
         return report
 

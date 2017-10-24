@@ -37,7 +37,8 @@ class BacktestEnv(gym.Env, Backtest):
         is_action = self.stepAction(action, price, date, "rl")
         reward = self.get_reward(is_action)
         status = self.get_status()
-        index_over = idx >= self.size or self.alpha[self.index] < -5. or (self.index > 10 and self.index / 100 > self.alpha[self.index] + 10)
+        index_over = idx >= self.size
+        #index_over = idx >= self.size or self.alpha[self.index] < -5. or (self.index > 10 and self.index / 100 > self.alpha[self.index] + 10)
         #index_over = idx >= self.size or self.alpha[self.index] < -2. or (idx > 10 and self.max_alpha / 2 > self.alpha[self.index])
         actionname = "HOLD"
         if is_action:

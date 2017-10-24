@@ -1,5 +1,7 @@
 import numpy as np
+import json
 
+from keras.callbacks import TensorBoard
 from keras.models import Sequential
 from keras.layers import Dense, Activation, Flatten
 from keras.optimizers import Adam
@@ -82,9 +84,8 @@ if args.mode == "train-load" or args.mode == "train":
 
     callbacks = [ModelIntervalCheckpoint(checkpoint_weights_filename, interval=100)]
     callbacks += [FileLogger(log_filename, interval=100)]
-    dqn.fit(env, callbacks=callbacks, nb_steps=25000, visualize=True, verbose=2)
-    dqn.fit(env, callbacks=callbacks, nb_steps=25000, visualize=True, verbose=2)
-    dqn.fit(env, callbacks=callbacks, nb_steps=25000, visualize=True, verbose=2)
+    #callbacks += [TensorBoard(log_dir=dirname, histogram_freq=1, write_grads=True)]
+    dqn.fit(env, callbacks=callbacks, nb_steps=250000, visualize=True, verbose=2)
 
 # After training is done, we save the final weights.
 
@@ -92,10 +93,11 @@ if args.mode == "train-load" or args.mode == "train":
     dqn.save_weights(weights_filename, overwrite=True)
 
 # Finally, evaluate our algorithm for 5 episodes.
-    dqn.test(env, nb_episodes=5, visualize=True)
+    dqn.test(env, nb_episodes=1, visualize=True)
 
 if args.mode == "test":
     dqn.load_weights(args.weights)
 
 # Finally, evaluate our algorithm for 5 episodes.
-    dqn.test(env, nb_episodes=5, visualize=True)
+    dqn.test(env, nb_episodes=1, visualize=True)
+    print(json.dumps(env.report(), indent=2))
