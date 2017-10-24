@@ -814,7 +814,7 @@ class Backtest(object):
                 "start": self.candles[0, self.col["start"]],
                 "end": self.candles[-1, self.col["start"]],
                 }
-        timespan = dates["start"] - dates["end"]
+        timespan = dates["end"] - dates["start"]
         # the portfolio's balance is measured in {currency}
         startPrice = self.candles[0, self.col["close"]]
         endPrice = self.candles[-1, self.col["close"]]
@@ -824,16 +824,16 @@ class Backtest(object):
         profit = self.portfolio["balance"] - start["balance"]
 
         report = {
-                "startTime": dates["start"].strftime('%Y-%m-%d %H:%M:%S'),
-                "endTime": dates["end"].strftime('%Y-%m-%d %H:%M:%S'),
+                "start_time": dates["start"].strftime('%Y-%m-%d %H:%M:%S'),
+                "end_time": dates["end"].strftime('%Y-%m-%d %H:%M:%S'),
                 "timespan": str(timespan),
                 "market": endPrice * 100 / startPrice - 100,
 
                 #"profit": profit,
                 "relative_profit": relative_profit,
 
-                #"yearlyProfit": round(profit / timespan.year()),
-                "relativeYearlyProfit": relative_profit * 365 / timespan.days,
+                #"yearly_profit": round(profit / timespan.year()),
+                "relative_yearly_profit": relative_profit * 365 / timespan.days,
                 "trades": self.trades,
         }
         profitdf = self.df.copy()
